@@ -86,17 +86,17 @@ public class EffectManager implements Listener {
         }
         
         // Add flashing text for a brief moment
-        if (random.nextDouble() < 0.7) { // 70% chance for appearance to include flashing text
+        if (plugin.getConfigManager().isFlashingTextEnabled() && random.nextDouble() < 0.7) { // 70% chance for appearance to include flashing text
             playFlashingTextEffect(player, 60, 0.6); // 3 seconds, medium intensity
         }
         
         // Randomly show a fake error message
-        if (random.nextDouble() < 0.3) { // 30% chance
+        if (plugin.getConfigManager().isFakeErrorsEnabled() && random.nextDouble() < 0.3) { // 30% chance
             displayFakeErrorMessage(player);
         }
         
         // Very small chance to trigger maze teleportation (extremely rare)
-        if (random.nextDouble() < 0.1) { // 10% chance
+        if (plugin.getConfigManager().isMazeTeleportEnabled() && random.nextDouble() < plugin.getConfigManager().getMazeTeleportChance()) {
             // Maze teleportation is a rare and intense event - 10-15 seconds duration
             performMazeTeleportEvent(player, 200 + random.nextInt(100), 0.7); 
         }
@@ -185,7 +185,7 @@ public class EffectManager implements Listener {
         }
         
         // Random chance to trigger skinwalker effect
-        if (random.nextDouble() < 0.15) { // 15% chance
+        if (plugin.getConfigManager().isSkinwalkerEnabled() && random.nextDouble() < plugin.getConfigManager().getSkinwalkerChance()) {
             // Choose a mode randomly
             int mode = random.nextInt(3); // 0=stare, 1=attack after staring, 2=attack if provoked
             
