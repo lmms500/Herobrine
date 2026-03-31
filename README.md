@@ -183,7 +183,17 @@ advanced:
   min_appearance_distance: 15
   # Maximum distance from player for appearances (in blocks)
   max_appearance_distance: 25
+  # Number of attempts to find a valid spawn location (10-100)
+  # Increase this if Herobrine fails to spawn in complex terrain
+  spawn_attempts: 30
 ```
+
+> **Important Server Configuration**: For Herobrine to work correctly, your server's
+> `entity-activation-range.misc` in `spigot.yml` must be **greater than or equal to**
+> `max_appearance_distance`. If it's lower, Herobrine's NPC will be inactive beyond that
+> range and fail to spawn. Similarly, `entity-broadcast-range-percentage` in
+> `server.properties` should be set to `100` to ensure the NPC is visible at the
+> configured appearance distances.
 
 ### Paranoia System Settings
 
