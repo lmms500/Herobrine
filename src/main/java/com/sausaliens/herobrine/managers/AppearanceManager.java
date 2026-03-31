@@ -80,15 +80,43 @@ public class AppearanceManager implements Listener {
                     continue;
                 }
                 
+                // Pacing system check — skip if pacing doesn't allow appearances yet
+                PacingManager pacing = plugin.getPacingManager();
+                if (pacing != null && !pacing.allowAppearance(player)) {
+                    // Even when appearances are blocked, ambient effects may still run
+                    if (pacing.allowAmbientEffects(player)) {
+                        // Trigger subtitles and pet reactions during SUBTLE phase
+                        SubtitleManager subtitles = plugin.getSubtitleManager();
+                        if (subtitles != null) {
+                            subtitles.trySendSubtitle(player);
+                        }
+                        PetReactionManager pets = plugin.getPetReactionManager();
+                        if (pets != null) {
+                            pets.triggerPhantomReaction(player);
+                        }
+                    }
+                    continue;
+                }
+                
                 // Get player memory
                 PlayerMemory memory = getPlayerMemory(player);
                 
                 // Calculate adaptive appearance chance based on player's memory
                 double adaptiveChance = calculateAdaptiveAppearanceChance(player, memory);
                 
+                // Apply pacing intensity multiplier
+                if (pacing != null) {
+                    adaptiveChance *= pacing.getIntensityMultiplier(player);
+                }
+                
                 if (Math.random() < adaptiveChance) {
-                    // Create appearance with delay based on player's context
-                    scheduleAppearanceForPlayer(player, memory);
+                    // If pacing only allows distant appearances, create those instead
+                    if (pacing != null && pacing.onlyDistantAppearances(player)) {
+                        createDistantAppearance(player);
+                    } else {
+                        // Create appearance with delay based on player's context
+                        scheduleAppearanceForPlayer(player, memory);
+                    }
                 }
                 
                 // Check for paranoia-based appearances (if enabled)
@@ -127,6 +155,12 @@ public class AppearanceManager implements Listener {
         // Record encounter for paranoia system
         if (plugin.getParanoiaManager() != null) {
             plugin.getParanoiaManager().recordEncounter(player, ParanoiaManager.EncounterType.DIRECT);
+        }
+        
+        // Notify pacing system of encounter
+        PacingManager pacing = plugin.getPacingManager();
+        if (pacing != null) {
+            pacing.recordEncounter(player);
         }
     }
 

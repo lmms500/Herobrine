@@ -155,4 +155,73 @@ advanced:
   # Number of attempts to find a valid spawn location (10-100)
   # Increase this if Herobrine fails to spawn in complex terrain
   # Note: server entity-activation-range.misc (spigot.yml) must be >= max_appearance_distance
-  spawn_attempts: 30 
+  spawn_attempts: 30
+
+# ============================================================
+# PHASE 1: Pacing & Atmosphere (NEW)
+# These systems create a deliberate horror experience instead
+# of random events. Herobrine's haunting follows a cycle:
+# DORMANT → SUBTLE → ACTIVE → INTENSE → CLIMAX → COOLDOWN
+# ============================================================
+
+# Pacing system - controls the rhythm of haunting
+pacing:
+  # Enable/disable the pacing system
+  # When disabled, all effects happen randomly as before
+  enabled: true
+  # Minutes of silence after server starts before any haunting begins
+  # This lets players settle in before the horror starts
+  warmup_minutes: 3
+  # Duration of each phase in SECONDS
+  phase_durations:
+    # DORMANT: Nothing happens. Player feels safe.
+    dormant: 120
+    # SUBTLE: Ambient sounds, subtitles, pet reactions. No visual sightings.
+    subtle: 300
+    # ACTIVE: Distant sightings, world manipulation, footsteps.
+    active: 600
+    # INTENSE: Close encounters, stalking, structures, torch manipulation.
+    intense: 300
+    # CLIMAX: Direct confrontation, screen shake, flashing text.
+    climax: 120
+    # COOLDOWN: Herobrine backs off. Player recovers.
+    cooldown: 300
+
+# World manipulation - environmental horror effects
+world_manipulation:
+  # Master toggle for all world manipulation
+  enabled: true
+  # Seconds between manipulation checks per player
+  interval: 20
+  # Chance per check to manipulate something (0.0 - 1.0)
+  chance: 0.3
+  # Ghost doors - doors open/close on their own
+  ghost_doors:
+    enabled: true
+    # Radius in blocks to search for doors
+    radius: 10
+  # Candle snuffer - candles go out near the player
+  candle_snuffer:
+    enabled: true
+    # Radius in blocks to search for candles
+    radius: 8
+  # Painting swap - paintings change when player isn't looking
+  painting_swap:
+    enabled: true
+    # Radius in blocks to search for paintings
+    radius: 12
+
+# Caution captions - subtle subtitle messages
+subtitles:
+  # Enable/disable subtitle messages
+  enabled: true
+  # Chance per check (every 30 seconds) to send a subtitle (0.0 - 1.0)
+  # Lower values = rarer, more impactful messages
+  chance: 0.15
+
+# Pet/animal reactions - animals sense Herobrine's presence
+pet_reactions:
+  # Enable/disable animal reactions
+  enabled: true
+  # Radius in blocks for animals to detect Herobrine
+  radius: 15

@@ -41,6 +41,31 @@ public class ConfigManager {
     private int spawnAttempts;
     private int ambientSoundFrequency;
     private double ambientSoundChance;
+    // Pacing settings
+    private boolean pacingEnabled;
+    private int pacingWarmupMinutes;
+    private int pacingDormantDuration;
+    private int pacingSubtleDuration;
+    private int pacingActiveDuration;
+    private int pacingIntenseDuration;
+    private int pacingClimaxDuration;
+    private int pacingCooldownDuration;
+    // World manipulation settings
+    private boolean worldManipulationEnabled;
+    private int worldManipulationInterval;
+    private double worldManipulationChance;
+    private boolean ghostDoorsEnabled;
+    private int ghostDoorsRadius;
+    private boolean candleSnufferEnabled;
+    private int candleSnufferRadius;
+    private boolean paintingSwapEnabled;
+    private int paintingSwapRadius;
+    // Subtitle settings
+    private boolean subtitlesEnabled;
+    private double subtitleChance;
+    // Pet reaction settings
+    private boolean petReactionsEnabled;
+    private int petReactionRadius;
     // Paranoia settings
     private boolean paranoiaEnabled;
     private double initialExposure;
@@ -112,6 +137,35 @@ public class ConfigManager {
         minAppearanceDistance = Math.max(5, config.getInt("advanced.min_appearance_distance", 15));
         maxAppearanceDistance = Math.max(minAppearanceDistance, config.getInt("advanced.max_appearance_distance", 25));
         spawnAttempts = Math.max(10, Math.min(100, config.getInt("advanced.spawn_attempts", 30)));
+
+        // Load pacing settings
+        pacingEnabled = config.getBoolean("pacing.enabled", true);
+        pacingWarmupMinutes = Math.max(0, Math.min(30, config.getInt("pacing.warmup_minutes", 3)));
+        pacingDormantDuration = Math.max(30, config.getInt("pacing.phase_durations.dormant", 120));
+        pacingSubtleDuration = Math.max(60, config.getInt("pacing.phase_durations.subtle", 300));
+        pacingActiveDuration = Math.max(60, config.getInt("pacing.phase_durations.active", 600));
+        pacingIntenseDuration = Math.max(60, config.getInt("pacing.phase_durations.intense", 300));
+        pacingClimaxDuration = Math.max(30, config.getInt("pacing.phase_durations.climax", 120));
+        pacingCooldownDuration = Math.max(60, config.getInt("pacing.phase_durations.cooldown", 300));
+
+        // Load world manipulation settings
+        worldManipulationEnabled = config.getBoolean("world_manipulation.enabled", true);
+        worldManipulationInterval = Math.max(5, Math.min(120, config.getInt("world_manipulation.interval", 20)));
+        worldManipulationChance = Math.min(1.0, Math.max(0.0, config.getDouble("world_manipulation.chance", 0.3)));
+        ghostDoorsEnabled = config.getBoolean("world_manipulation.ghost_doors.enabled", true);
+        ghostDoorsRadius = Math.max(3, Math.min(20, config.getInt("world_manipulation.ghost_doors.radius", 10)));
+        candleSnufferEnabled = config.getBoolean("world_manipulation.candle_snuffer.enabled", true);
+        candleSnufferRadius = Math.max(3, Math.min(15, config.getInt("world_manipulation.candle_snuffer.radius", 8)));
+        paintingSwapEnabled = config.getBoolean("world_manipulation.painting_swap.enabled", true);
+        paintingSwapRadius = Math.max(3, Math.min(20, config.getInt("world_manipulation.painting_swap.radius", 12)));
+
+        // Load subtitle settings
+        subtitlesEnabled = config.getBoolean("subtitles.enabled", true);
+        subtitleChance = Math.min(1.0, Math.max(0.0, config.getDouble("subtitles.chance", 0.15)));
+
+        // Load pet reaction settings
+        petReactionsEnabled = config.getBoolean("pet_reactions.enabled", true);
+        petReactionRadius = Math.max(5, Math.min(30, config.getInt("pet_reactions.radius", 15)));
 
         // Load paranoia settings
         paranoiaEnabled = config.getBoolean("paranoia.enabled", true);
@@ -260,6 +314,35 @@ public class ConfigManager {
         config.set("advanced.max_appearance_distance", maxAppearanceDistance);
         config.set("advanced.spawn_attempts", spawnAttempts);
         
+        // Save pacing settings
+        config.set("pacing.enabled", pacingEnabled);
+        config.set("pacing.warmup_minutes", pacingWarmupMinutes);
+        config.set("pacing.phase_durations.dormant", pacingDormantDuration);
+        config.set("pacing.phase_durations.subtle", pacingSubtleDuration);
+        config.set("pacing.phase_durations.active", pacingActiveDuration);
+        config.set("pacing.phase_durations.intense", pacingIntenseDuration);
+        config.set("pacing.phase_durations.climax", pacingClimaxDuration);
+        config.set("pacing.phase_durations.cooldown", pacingCooldownDuration);
+
+        // Save world manipulation settings
+        config.set("world_manipulation.enabled", worldManipulationEnabled);
+        config.set("world_manipulation.interval", worldManipulationInterval);
+        config.set("world_manipulation.chance", worldManipulationChance);
+        config.set("world_manipulation.ghost_doors.enabled", ghostDoorsEnabled);
+        config.set("world_manipulation.ghost_doors.radius", ghostDoorsRadius);
+        config.set("world_manipulation.candle_snuffer.enabled", candleSnufferEnabled);
+        config.set("world_manipulation.candle_snuffer.radius", candleSnufferRadius);
+        config.set("world_manipulation.painting_swap.enabled", paintingSwapEnabled);
+        config.set("world_manipulation.painting_swap.radius", paintingSwapRadius);
+
+        // Save subtitle settings
+        config.set("subtitles.enabled", subtitlesEnabled);
+        config.set("subtitles.chance", subtitleChance);
+
+        // Save pet reaction settings
+        config.set("pet_reactions.enabled", petReactionsEnabled);
+        config.set("pet_reactions.radius", petReactionRadius);
+
         // Save effects settings
         config.set("effects.ambient_sounds", ambientSoundsEnabled);
         config.set("effects.ambient_sound_frequency", ambientSoundFrequency);
@@ -739,4 +822,33 @@ public class ConfigManager {
         this.spawnAttempts = Math.max(10, Math.min(100, attempts));
         saveConfig();
     }
+
+    // Pacing getters
+    public boolean isPacingEnabled() { return pacingEnabled; }
+    public int getPacingWarmupMinutes() { return pacingWarmupMinutes; }
+    public int getPacingDormantDuration() { return pacingDormantDuration; }
+    public int getPacingSubtleDuration() { return pacingSubtleDuration; }
+    public int getPacingActiveDuration() { return pacingActiveDuration; }
+    public int getPacingIntenseDuration() { return pacingIntenseDuration; }
+    public int getPacingClimaxDuration() { return pacingClimaxDuration; }
+    public int getPacingCooldownDuration() { return pacingCooldownDuration; }
+
+    // World manipulation getters
+    public boolean isWorldManipulationEnabled() { return worldManipulationEnabled; }
+    public int getWorldManipulationInterval() { return worldManipulationInterval; }
+    public double getWorldManipulationChance() { return worldManipulationChance; }
+    public boolean isGhostDoorsEnabled() { return ghostDoorsEnabled; }
+    public int getGhostDoorsRadius() { return ghostDoorsRadius; }
+    public boolean isCandleSnufferEnabled() { return candleSnufferEnabled; }
+    public int getCandleSnufferRadius() { return candleSnufferRadius; }
+    public boolean isPaintingSwapEnabled() { return paintingSwapEnabled; }
+    public int getPaintingSwapRadius() { return paintingSwapRadius; }
+
+    // Subtitle getters
+    public boolean isSubtitlesEnabled() { return subtitlesEnabled; }
+    public double getSubtitleChance() { return subtitleChance; }
+
+    // Pet reaction getters
+    public boolean isPetReactionsEnabled() { return petReactionsEnabled; }
+    public int getPetReactionRadius() { return petReactionRadius; }
 } 
