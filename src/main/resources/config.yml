@@ -55,6 +55,20 @@ effects:
   torch_removal_chance: 0.3
   # Enable/disable screen shake effects
   screen_shake_enabled: true
+  # Enable/disable flashing text effect during appearances
+  flashing_text_enabled: true
+  # Enable/disable fake error messages during appearances
+  fake_errors_enabled: true
+  # Enable/disable maze teleportation (rare, intense disorientation effect)
+  maze_teleport_enabled: true
+  # Chance for maze teleportation to trigger (0.0 - 1.0)
+  maze_teleport_chance: 0.1
+  # Enable/disable skinwalker effect (animals mimicking player behavior)
+  skinwalker_enabled: true
+  # Chance for skinwalker effect during stalking (0.0 - 1.0)
+  skinwalker_chance: 0.15
+  # Maximum number of animals for skinwalker effect
+  skinwalker_max_animals: 3
 
 # Structure settings
 structures:
@@ -137,4 +151,8 @@ advanced:
   # Minimum distance from player for appearances (in blocks)
   min_appearance_distance: 15
   # Maximum distance from player for appearances (in blocks)
-  max_appearance_distance: 25 
+  max_appearance_distance: 25
+  # Number of attempts to find a valid spawn location (10-100)
+  # Increase this if Herobrine fails to spawn in complex terrain
+  # Note: server entity-activation-range.misc (spigot.yml) must be >= max_appearance_distance
+  spawn_attempts: 30 

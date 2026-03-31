@@ -25,12 +25,20 @@ public class ConfigManager {
     private double torchConversionChance;
     private double torchRemovalChance;
     private boolean screenShakeEnabled;
+    private boolean flashingTextEnabled;
+    private boolean fakeErrorsEnabled;
+    private boolean mazeTeleportEnabled;
+    private double mazeTeleportChance;
+    private boolean skinwalkerEnabled;
+    private double skinwalkerChance;
+    private int skinwalkerMaxAnimals;
     // Advanced settings
     private boolean debugMode;
     private int maxAppearances;
     private int appearanceDuration;
     private int minAppearanceDistance;
     private int maxAppearanceDistance;
+    private int spawnAttempts;
     private int ambientSoundFrequency;
     private double ambientSoundChance;
     // Paranoia settings
@@ -89,6 +97,13 @@ public class ConfigManager {
         torchConversionChance = Math.min(1.0, Math.max(0.0, config.getDouble("effects.torch_conversion_chance", 0.7)));
         torchRemovalChance = Math.min(1.0, Math.max(0.0, config.getDouble("effects.torch_removal_chance", 0.3)));
         screenShakeEnabled = config.getBoolean("effects.screen_shake_enabled", true);
+        flashingTextEnabled = config.getBoolean("effects.flashing_text_enabled", true);
+        fakeErrorsEnabled = config.getBoolean("effects.fake_errors_enabled", true);
+        mazeTeleportEnabled = config.getBoolean("effects.maze_teleport_enabled", true);
+        mazeTeleportChance = Math.min(1.0, Math.max(0.0, config.getDouble("effects.maze_teleport_chance", 0.1)));
+        skinwalkerEnabled = config.getBoolean("effects.skinwalker_enabled", true);
+        skinwalkerChance = Math.min(1.0, Math.max(0.0, config.getDouble("effects.skinwalker_chance", 0.15)));
+        skinwalkerMaxAnimals = Math.max(1, Math.min(10, config.getInt("effects.skinwalker_max_animals", 3)));
         
         // Load advanced settings with validation
         debugMode = config.getBoolean("advanced.debug", false);
@@ -96,6 +111,7 @@ public class ConfigManager {
         appearanceDuration = Math.max(1, config.getInt("advanced.appearance_duration", 10));
         minAppearanceDistance = Math.max(5, config.getInt("advanced.min_appearance_distance", 15));
         maxAppearanceDistance = Math.max(minAppearanceDistance, config.getInt("advanced.max_appearance_distance", 25));
+        spawnAttempts = Math.max(10, Math.min(100, config.getInt("advanced.spawn_attempts", 30)));
 
         // Load paranoia settings
         paranoiaEnabled = config.getBoolean("paranoia.enabled", true);
@@ -189,6 +205,13 @@ public class ConfigManager {
         config.set("effects.torch_conversion_chance", torchConversionChance);
         config.set("effects.torch_removal_chance", torchRemovalChance);
         config.set("effects.screen_shake_enabled", screenShakeEnabled);
+        config.set("effects.flashing_text_enabled", flashingTextEnabled);
+        config.set("effects.fake_errors_enabled", fakeErrorsEnabled);
+        config.set("effects.maze_teleport_enabled", mazeTeleportEnabled);
+        config.set("effects.maze_teleport_chance", mazeTeleportChance);
+        config.set("effects.skinwalker_enabled", skinwalkerEnabled);
+        config.set("effects.skinwalker_chance", skinwalkerChance);
+        config.set("effects.skinwalker_max_animals", skinwalkerMaxAnimals);
         
         // Save structure settings
         String[] structureTypes = {
@@ -235,6 +258,7 @@ public class ConfigManager {
         config.set("advanced.appearance_duration", appearanceDuration);
         config.set("advanced.min_appearance_distance", minAppearanceDistance);
         config.set("advanced.max_appearance_distance", maxAppearanceDistance);
+        config.set("advanced.spawn_attempts", spawnAttempts);
         
         // Save effects settings
         config.set("effects.ambient_sounds", ambientSoundsEnabled);
@@ -641,6 +665,78 @@ public class ConfigManager {
 
     public void setScreenShakeEnabled(boolean enabled) {
         this.screenShakeEnabled = enabled;
+        saveConfig();
+    }
+
+    public boolean isFlashingTextEnabled() {
+        return flashingTextEnabled;
+    }
+
+    public void setFlashingTextEnabled(boolean enabled) {
+        this.flashingTextEnabled = enabled;
+        saveConfig();
+    }
+
+    public boolean isFakeErrorsEnabled() {
+        return fakeErrorsEnabled;
+    }
+
+    public void setFakeErrorsEnabled(boolean enabled) {
+        this.fakeErrorsEnabled = enabled;
+        saveConfig();
+    }
+
+    public boolean isMazeTeleportEnabled() {
+        return mazeTeleportEnabled;
+    }
+
+    public void setMazeTeleportEnabled(boolean enabled) {
+        this.mazeTeleportEnabled = enabled;
+        saveConfig();
+    }
+
+    public double getMazeTeleportChance() {
+        return mazeTeleportChance;
+    }
+
+    public void setMazeTeleportChance(double chance) {
+        this.mazeTeleportChance = Math.min(1.0, Math.max(0.0, chance));
+        saveConfig();
+    }
+
+    public boolean isSkinwalkerEnabled() {
+        return skinwalkerEnabled;
+    }
+
+    public void setSkinwalkerEnabled(boolean enabled) {
+        this.skinwalkerEnabled = enabled;
+        saveConfig();
+    }
+
+    public double getSkinwalkerChance() {
+        return skinwalkerChance;
+    }
+
+    public void setSkinwalkerChance(double chance) {
+        this.skinwalkerChance = Math.min(1.0, Math.max(0.0, chance));
+        saveConfig();
+    }
+
+    public int getSkinwalkerMaxAnimals() {
+        return skinwalkerMaxAnimals;
+    }
+
+    public void setSkinwalkerMaxAnimals(int max) {
+        this.skinwalkerMaxAnimals = Math.max(1, Math.min(10, max));
+        saveConfig();
+    }
+
+    public int getSpawnAttempts() {
+        return spawnAttempts;
+    }
+
+    public void setSpawnAttempts(int attempts) {
+        this.spawnAttempts = Math.max(10, Math.min(100, attempts));
         saveConfig();
     }
 } 

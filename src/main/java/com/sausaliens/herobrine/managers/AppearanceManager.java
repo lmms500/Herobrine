@@ -449,7 +449,8 @@ public class AppearanceManager implements Listener {
     }
 
     private Location findSuitableLocation(Location center, int minDistance, int maxDistance) {
-        for (int attempts = 0; attempts < 10; attempts++) {
+        int maxAttempts = plugin.getConfigManager().getSpawnAttempts();
+        for (int attempts = 0; attempts < maxAttempts; attempts++) {
             // Get random angle and distance
             double angle = Math.random() * 2 * Math.PI;
             double distance = minDistance + Math.random() * (maxDistance - minDistance);
@@ -489,7 +490,8 @@ public class AppearanceManager implements Listener {
         }
         
         // Try multiple positions to find a valid location
-        for (int i = 0; i < 10; i++) {
+        int maxAttempts = plugin.getConfigManager().getSpawnAttempts();
+        for (int i = 0; i < maxAttempts; i++) {
             // Choose random distance between min and max
             double distance = minDist + random.nextDouble() * (maxDist - minDist);
             
@@ -896,7 +898,8 @@ public class AppearanceManager implements Listener {
         int viewDistance = getServerViewDistance();
         
         // Try to find a location within view distance but not too close
-        for (int attempts = 0; attempts < 10; attempts++) {
+        int maxAttempts = plugin.getConfigManager().getSpawnAttempts();
+        for (int attempts = 0; attempts < maxAttempts; attempts++) {
             double angle = random.nextDouble() * 2 * Math.PI;
             double distance = viewDistance * 0.3 + random.nextDouble() * (viewDistance * 0.7); // Between 30% and 100% of view distance
             
@@ -922,7 +925,8 @@ public class AppearanceManager implements Listener {
         int viewDistance = getServerViewDistance();
         
         // Try to find a location just at the edge of view distance
-        for (int attempts = 0; attempts < 10; attempts++) {
+        int maxAttempts = plugin.getConfigManager().getSpawnAttempts();
+        for (int attempts = 0; attempts < maxAttempts; attempts++) {
             double angle = random.nextDouble() * 2 * Math.PI;
             double distance = viewDistance * 0.8 + random.nextDouble() * (viewDistance * 0.2); // Between 80% and 100% of view distance
             
