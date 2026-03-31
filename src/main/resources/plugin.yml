@@ -3,6 +3,7 @@ version: '${project.version}'
 main: com.sausaliens.herobrine.HerobrinePlugin
 api-version: '1.21'
 depend: [Citizens, ProtocolLib]
+softdepend: [voicechat]
 authors: [Sausaliens]
 description: A plugin that adds Herobrine to your server
 commands:

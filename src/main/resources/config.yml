@@ -225,3 +225,22 @@ pet_reactions:
   enabled: true
   # Radius in blocks for animals to detect Herobrine
   radius: 15
+
+# Voice audio via Simple Voice Chat (requires voicechat plugin)
+# Herobrine whispers, breathes, and speaks through the voice chat system.
+# Audio files are loaded from plugins/Herobrine/sounds/
+# Players can adjust volume independently via the "Herobrine" volume category.
+voice:
+  # Master toggle for all voice audio
+  enabled: true
+  # Global volume multiplier (0.0 - 2.0)
+  volume: 0.8
+  # Chance of whisper when Herobrine checks a player (0-100%)
+  # Whispers play directly inside the player's ears (non-positional)
+  whisper_chance: 30
+  # Chance of breathing sound at Herobrine's position (0-100%)
+  # Breathing is 3D positional — you hear it FROM Herobrine's location
+  breathing_chance: 50
+  # Chance of ambient horror sound (0-100%)
+  # Ambient sounds are distant and atmospheric
+  ambient_chance: 20

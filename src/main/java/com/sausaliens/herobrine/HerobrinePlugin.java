@@ -10,8 +10,12 @@ import com.sausaliens.herobrine.managers.ParanoiaManager;
 import com.sausaliens.herobrine.managers.PetReactionManager;
 import com.sausaliens.herobrine.managers.StructureManager;
 import com.sausaliens.herobrine.managers.SubtitleManager;
+import com.sausaliens.herobrine.managers.VoiceManager;
 import com.sausaliens.herobrine.managers.WorldManipulationManager;
+import com.sausaliens.herobrine.voice.HerobrineVoicechatPlugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import javax.annotation.Nullable;
 
 public class HerobrinePlugin extends JavaPlugin {
     private ConfigManager configManager;
@@ -24,6 +28,9 @@ public class HerobrinePlugin extends JavaPlugin {
     private WorldManipulationManager worldManipulationManager;
     private SubtitleManager subtitleManager;
     private PetReactionManager petReactionManager;
+    private VoiceManager voiceManager;
+    @Nullable
+    private HerobrineVoicechatPlugin voicechatPlugin;
 
     @Override
     public void onEnable() {
@@ -37,6 +44,23 @@ public class HerobrinePlugin extends JavaPlugin {
         subtitleManager = new SubtitleManager(this);
         petReactionManager = new PetReactionManager(this);
         worldManipulationManager = new WorldManipulationManager(this);
+        
+        // Voice system (optional — only if Simple Voice Chat is present)
+        voiceManager = new VoiceManager(this);
+        try {
+            Class.forName("de.maxhenkel.voicechat.api.BukkitVoicechatService");
+            de.maxhenkel.voicechat.api.BukkitVoicechatService service =
+                getServer().getServicesManager().load(de.maxhenkel.voicechat.api.BukkitVoicechatService.class);
+            if (service != null) {
+                voicechatPlugin = new HerobrineVoicechatPlugin(this);
+                service.registerPlugin(voicechatPlugin);
+                getLogger().info("[Voice] Registered with Simple Voice Chat");
+            } else {
+                getLogger().info("[Voice] Simple Voice Chat not found — voice features disabled");
+            }
+        } catch (ClassNotFoundException e) {
+            getLogger().info("[Voice] Simple Voice Chat not present — voice features disabled");
+        }
         
         appearanceManager = new AppearanceManager(this);
         structureManager = new StructureManager(this);
@@ -78,6 +102,12 @@ public class HerobrinePlugin extends JavaPlugin {
         }
         if (worldManipulationManager != null) {
             worldManipulationManager.cleanup();
+        }
+        if (voiceManager != null) {
+            voiceManager.cleanup();
+        }
+        if (voicechatPlugin != null) {
+            getServer().getServicesManager().unregister(voicechatPlugin);
         }
 
         getLogger().info("I will return...");
@@ -121,5 +151,10 @@ public class HerobrinePlugin extends JavaPlugin {
 
     public PetReactionManager getPetReactionManager() {
         return petReactionManager;
+    }
+
+    @Nullable
+    public VoiceManager getVoiceManager() {
+        return voiceManager;
     }
 } 

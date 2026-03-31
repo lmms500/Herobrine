@@ -94,6 +94,18 @@ public class AppearanceManager implements Listener {
                         if (pets != null) {
                             pets.triggerPhantomReaction(player);
                         }
+                        // Whisper audio during SUBTLE+ phases (non-positional, inside player's head)
+                        VoiceManager voice = plugin.getVoiceManager();
+                        if (voice != null && voice.isAvailable()) {
+                            if (random.nextInt(100) < plugin.getConfigManager().getVoiceWhisperChance()) {
+                                voice.playWhisper(player);
+                            } else if (random.nextInt(100) < plugin.getConfigManager().getVoiceAmbientChance()) {
+                                // Ambient horror sounds from a random nearby location
+                                Location ambientLoc = player.getLocation().add(
+                                    (random.nextDouble() - 0.5) * 40, 0, (random.nextDouble() - 0.5) * 40);
+                                voice.playAmbient(player, ambientLoc);
+                            }
+                        }
                     }
                     continue;
                 }
@@ -161,6 +173,29 @@ public class AppearanceManager implements Listener {
         PacingManager pacing = plugin.getPacingManager();
         if (pacing != null) {
             pacing.recordEncounter(player);
+        }
+        
+        // Play voice audio based on pacing phase
+        VoiceManager voice = plugin.getVoiceManager();
+        if (voice != null && voice.isAvailable()) {
+            PacingManager.HauntPhase phase = pacing != null ? pacing.getPhase(player) : PacingManager.HauntPhase.ACTIVE;
+            
+            if (phase.getLevel() >= PacingManager.HauntPhase.INTENSE.getLevel()) {
+                // Intense/Climax: breathing at Herobrine's position + chance of laugh/voice
+                if (random.nextInt(100) < plugin.getConfigManager().getVoiceBreathingChance()) {
+                    voice.playBreathing(player, location);
+                }
+                if (phase == PacingManager.HauntPhase.CLIMAX && random.nextInt(100) < 40) {
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> voice.playVoice(player), 40L);
+                } else if (random.nextInt(100) < 20) {
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> voice.playLaugh(player, location), 60L);
+                }
+            } else if (phase.getLevel() >= PacingManager.HauntPhase.ACTIVE.getLevel()) {
+                // Active: breathing at Herobrine's position
+                if (random.nextInt(100) < plugin.getConfigManager().getVoiceBreathingChance()) {
+                    voice.playBreathing(player, location);
+                }
+            }
         }
     }
 

@@ -78,6 +78,10 @@
             <url>https://maven.citizensnpcs.co/repo</url>
         </repository>
 
+        <repository>
+            <id>henkelmax-public</id>
+            <url>https://maven.maxhenkel.de/repository/public</url>
+        </repository>
 
     </repositories>
 
@@ -101,6 +105,13 @@
             <groupId>net.citizensnpcs</groupId>
             <artifactId>citizens-main</artifactId>
             <version>2.0.37-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>de.maxhenkel.voicechat</groupId>
+            <artifactId>voicechat-api</artifactId>
+            <version>2.5.0</version>
             <scope>provided</scope>
         </dependency>
 

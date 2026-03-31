@@ -66,6 +66,12 @@ public class ConfigManager {
     // Pet reaction settings
     private boolean petReactionsEnabled;
     private int petReactionRadius;
+    // Voice settings (Simple Voice Chat integration)
+    private boolean voiceEnabled;
+    private float voiceVolume;
+    private int voiceWhisperChance;
+    private int voiceBreathingChance;
+    private int voiceAmbientChance;
     // Paranoia settings
     private boolean paranoiaEnabled;
     private double initialExposure;
@@ -166,6 +172,13 @@ public class ConfigManager {
         // Load pet reaction settings
         petReactionsEnabled = config.getBoolean("pet_reactions.enabled", true);
         petReactionRadius = Math.max(5, Math.min(30, config.getInt("pet_reactions.radius", 15)));
+
+        // Load voice settings
+        voiceEnabled = config.getBoolean("voice.enabled", true);
+        voiceVolume = (float) Math.min(2.0, Math.max(0.0, config.getDouble("voice.volume", 0.8)));
+        voiceWhisperChance = Math.max(0, Math.min(100, config.getInt("voice.whisper_chance", 30)));
+        voiceBreathingChance = Math.max(0, Math.min(100, config.getInt("voice.breathing_chance", 50)));
+        voiceAmbientChance = Math.max(0, Math.min(100, config.getInt("voice.ambient_chance", 20)));
 
         // Load paranoia settings
         paranoiaEnabled = config.getBoolean("paranoia.enabled", true);
@@ -342,6 +355,13 @@ public class ConfigManager {
         // Save pet reaction settings
         config.set("pet_reactions.enabled", petReactionsEnabled);
         config.set("pet_reactions.radius", petReactionRadius);
+
+        // Save voice settings
+        config.set("voice.enabled", voiceEnabled);
+        config.set("voice.volume", voiceVolume);
+        config.set("voice.whisper_chance", voiceWhisperChance);
+        config.set("voice.breathing_chance", voiceBreathingChance);
+        config.set("voice.ambient_chance", voiceAmbientChance);
 
         // Save effects settings
         config.set("effects.ambient_sounds", ambientSoundsEnabled);
@@ -851,4 +871,11 @@ public class ConfigManager {
     // Pet reaction getters
     public boolean isPetReactionsEnabled() { return petReactionsEnabled; }
     public int getPetReactionRadius() { return petReactionRadius; }
+
+    // Voice getters
+    public boolean isVoiceEnabled() { return voiceEnabled; }
+    public float getVoiceVolume() { return voiceVolume; }
+    public int getVoiceWhisperChance() { return voiceWhisperChance; }
+    public int getVoiceBreathingChance() { return voiceBreathingChance; }
+    public int getVoiceAmbientChance() { return voiceAmbientChance; }
 } 
